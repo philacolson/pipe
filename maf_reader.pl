@@ -36,12 +36,12 @@ while (my $line = <FH>) {
         $SNP->TCGAID(@lineArray[$HEADERS::NCBI_Build]);
         $SNP->POS(@lineArray[$HEADERS::Start_Position]);
         $SNP->CHROM(@lineArray[$HEADERS::Chromosome]);
-        $SNP->START(@lineArray[$HEADERS::Start_Position]);
-        $SNP->END(@lineArray[$HEADERS::End_Position]);
+        $SNP->STARTER(@lineArray[$HEADERS::Start_Position]);
+        $SNP->ENDER(@lineArray[$HEADERS::End_Position]);
         $SNP->STRAND(@lineArray[$HEADERS::Strand]);
         $SNP->VARIANTCLASS(@lineArray[$HEADERS::Variant_Classification]);
         $SNP->VARIANTTYPE(@lineArray[$HEADERS::Variant_Type]);
-		$SNP->REFALLELE(@lineArray[$HEADERS::Referene_Allele]);
+	$SNP->REFALLELE(@lineArray[$HEADERS::Referene_Allele]);
         $SNP->TUMORSEQALLELE1(@lineArray[$HEADERS::Tumor_Seq_Allele1]);
         $SNP->TUMORSEQALLELE2(@lineArray[$HEADERS::Tumor_Seq_Allele2]);
         $SNP->DBSNP(@lineArray[$HEADERS::dbSNP_RS]);
@@ -95,11 +95,14 @@ sub assign_headers
 {
 	package HEADERS;
 	my @array = @{$_[0]};
+    my @headers=("ENTREZ", "CENTER", "TCGAID", "POS", "CHROM", "STARTER", "ENDER", "STRAND", "VARIANTCLASS", "VARIANTTYPE", "REFALLELE", "TUMORSEQALLELE1", "TUMORSEQALLELE2", "DBSNP", "DBSNPVALIDSTATUS", "TUMORBARCODE", "MATCHEDNORMSAMPLEBARCODE", "MATCHNORMSEQALLELE1", "MATCHNORMSEQALLELE2", "TUMORVALIDALLELE1", "TUMORVALIDALLELE2", "MATCH_NORM_VALID_ALLELE1", "MATCH_NORM_VALID_ALLELE2", "VERIFICATIONSTATUS", "VALIDATIONSTATUS", "MUTATIONSTATUS", "SEQPHASE", "SEQSOURCE", "VALIDATIONMETHOD", "SEQUENCER", "TUMORSAMPLEUUID", "MATCHNORMSAMPLEUUID");
 	my $iter = 0;
 
 	# check each array loop against known headers and assign the array index to header
-	foreach (@array)
-	{
+	foreach(@arrays);
+    {
+        
+    }
     	if ($_ eq "CHROM")
     	{
     		our $CHROM = $iter;
