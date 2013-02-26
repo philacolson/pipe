@@ -10,7 +10,7 @@ use strict;
 use warnings;
 use CLASS::SNP;
 
-# open FH, '<', "CEU.exon.2010_06.genotypes.vcf";
+
 open FH, '<', "$ARGV[0]";
 # open FH, '<', $TEST::file;
 
