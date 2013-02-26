@@ -99,67 +99,12 @@ sub assign_headers
 	my $iter = 0;
 
 	# check each array loop against known headers and assign the array index to header
-	foreach(@arrays);
-    {
-        
-    }
-    	if ($_ eq "CHROM")
-    	{
-    		our $CHROM = $iter;
+####If you get it reading stuff in, you can delete this code.
+    #	if ($_ eq "CHROM")
+    #	{
+    #		our $CHROM = $iter;
     		# print "found CHROME! at index $CHROM\n";
-    	};
+    #	};
 
-    	if ($_ eq "POS")
-    	{
-    		our $POS = $iter;
-    		# print "found POS! at index $iter\n"
-    	};
-
-    	if ($_ eq "ID")
-    	{
-    		our $ID = $iter;
-    		# print "found POS! at index $iter\n"
-    	};
-
-    	if ($_ eq "REF")
-    	{
-    		our $REF = $iter;
-    		# print "found POS! at index $iter\n"
-    	};
-
-
-    	if ($_ eq "ALT")
-    	{
-    		our $ALT = $iter;
-    		# print "found POS! at index $iter\n"
-    	};
-
-
-    	if ($_ eq "QUAL")
-    	{
-    		our $QUAL = $iter;
-    		# print "found POS! at index $iter\n"
-    	};
-
-    	if ($_ eq "FILTER")
-    	{
-    		our $FILTER = $iter;
-    		# print "found POS! at index $iter\n"
-    	};
-
-
-    	if ($_ eq "INFO")
-    	{
-    		our $INFO = $iter;
-    		# print "found POS! at index $iter\n"
-    	};
-
-    	if ($_ eq "FORMAT")
-    	{
-    		our $FORMAT = $iter;
-    		# print "found POS! at index $iter\n"
-    	};
-
-    	$iter ++;
-	};
+    	
 };
