@@ -23,11 +23,13 @@ my @SNPS = ();
 while (my $line = <FH>) {
 	# once you've found the headers, this will begin to kickoff
 	
-	# Search for line with "#C" at the beginning.  This will contain the headers
-	if ($line =~ m/#/ ) {
+	
+	if ($line =~ m/#/) {
 		
-	};
-
+	}
+    elsif ($line =~ m/HUGO_SYMBOL/){
+        #Headers already taken care of
+    }
     else 
         {
         # get line elements and create a new SNAPE object using the elements
@@ -37,38 +39,38 @@ while (my $line = <FH>) {
 
         # set all the values.  Note that this could be done in a constructor
         ### Need to check to verify that that position exists before setting value
-        $SNP->ENTREZ(@lineArray[$HEADERS::Entrez_Gene_Id]);
-        $SNP->CENTER(@lineArray[$HEADERS::Center]);
-        $SNP->TCGAID(@lineArray[$HEADERS::NCBI_Build]);
-        $SNP->POS(@lineArray[$HEADERS::Start_Position]);
-        $SNP->CHROM(@lineArray[$HEADERS::Chromosome]);
-        $SNP->STARTER(@lineArray[$HEADERS::Start_Position]);
-        $SNP->ENDER(@lineArray[$HEADERS::End_Position]);
-        $SNP->STRAND(@lineArray[$HEADERS::Strand]);
-        $SNP->VARIANTCLASS(@lineArray[$HEADERS::Variant_Classification]);
-        $SNP->VARIANTTYPE(@lineArray[$HEADERS::Variant_Type]);
-        $SNP->REFALLELE(@lineArray[$HEADERS::Referene_Allele]);
-        $SNP->TUMORSEQALLELE1(@lineArray[$HEADERS::Tumor_Seq_Allele1]);
-        $SNP->TUMORSEQALLELE2(@lineArray[$HEADERS::Tumor_Seq_Allele2]);
-        $SNP->DBSNP(@lineArray[$HEADERS::dbSNP_RS]);
-        $SNP->DBSNPVALIDSTATUS(@lineArray[$HEADERS::dbSNP_Val_Status]);
-        $SNP->TUMORBARCODE(@lineArray[$HEADERS::Tumor_Sample_Barcode]);
-        $SNP->MATCHEDNORMSAMPLEBARCODE(@lineArray[$HEADERS::Matched_Norm_Sample_Barcode]);
-        $SNP->MATCHNORMSEQALLELE1(@lineArray[$HEADERS::Match_Norm_Seq_Allele1]);
-        $SNP->MATCHNORMSEQALLELE2(@lineArray[$HEADERS::Match_Norm_Seq_Allele2]);
-        $SNP->TUMORVALIDALLELE1(@lineArray[$HEADERS::Tumor_Validation_Allele1]);
-        $SNP->TUMORVALIDALLELE2(@lineArray[$HEADERS::Tumor_Validation_Allele2]);
-        $SNP->MATCH_NORM_VALID_ALLELE1(@lineArray[$HEADERS::Match_Norm_Validation_Allele1]);
-        $SNP->MATCH_NORM_VALID_ALLELE2(@lineArray[$HEADERS::Match_Norm_Validation_Allele2]);
-        $SNP->VERIFICATIONSTATUS(@lineArray[$HEADERS::Verification_Status]);
-        $SNP->VALIDATIONSTATUS(@lineArray[$HEADERS::Validation_Status]);
-        $SNP->MUTATIONSTATUS(@lineArray[$HEADERS::Mutation_Status]);
-        $SNP->SEQPHASE(@lineArray[$HEADERS::Sequencing_Phase]);
-        $SNP->SEQSOURCE(@lineArray[$HEADERS::Sequence_Source]);
-        $SNP->VALIDATIONMETHOD(@lineArray[$HEADERS::Validation_Method]);
-        $SNP->SEQUENCER(@lineArray[$HEADERS::Sequencer]);
-        $SNP->TUMORSAMPLEUUID(@lineArray[$HEADERS::Tumor_Sample_UUID]);
-        $SNP->MATCHNORMSAMPLEUUID(@lineArray[$HEADERS::Matched_Norm_Sample_UUID]);
+        $SNP->ENTREZ($lineArray[0]);
+        $SNP->CENTER($lineArray[1]);
+        $SNP->TCGAID($lineArray[2]);
+        $SNP->POS($lineArray[3]);
+        $SNP->CHROME($lineArray[4]);
+        $SNP->STARTER($lineArray[5]);
+        $SNP->ENDER($lineArray[6]);
+        $SNP->STRAND($lineArray[7]);
+        $SNP->VARIANTCLASS($lineArray[8]);
+        $SNP->VARIANTTYPE($lineArray[9]);
+        $SNP->REFALLELE($lineArray[10]);
+        $SNP->TUMORSEQALLELE1($lineArray[11]);
+        $SNP->TUMORSEQALLELE2($lineArray[12]);
+        $SNP->DBSNP($lineArray[13]);
+        $SNP->DBSNPVALIDSTATUS($lineArray[14]);
+        $SNP->TUMORBARCODE($lineArray[15]);
+        $SNP->MATCHEDNORMSAMPLEBARCODE($lineArray[16]);
+        $SNP->MATCHNORMSEQALLELE1($lineArray[17]);
+        $SNP->MATCHNORMSEQALLELE2($lineArray[18]);
+        $SNP->TUMORVALIDALLELE1($lineArray[19]);
+        $SNP->TUMORVALIDALLELE2($lineArray[20]);
+        $SNP->MATCH_NORM_VALID_ALLELE1($lineArray[21]);
+        $SNP->MATCH_NORM_VALID_ALLELE2($lineArray[22]);
+        $SNP->VERIFICATIONSTATUS($lineArray[23]);
+        $SNP->VALIDATIONSTATUS($lineArray[24]);
+        $SNP->MUTATIONSTATUS($lineArray[25]);
+        $SNP->SEQPHASE($lineArray[26]);
+        $SNP->SEQSOURCE($lineArray[27]);
+        $SNP->VALIDATIONMETHOD($lineArray[28]);
+        $SNP->SEQUENCER($lineArray[29]);
+        $SNP->TUMORSAMPLEUUID($lineArray[30]);
+        $SNP->MATCHNORMSAMPLEUUID($lineArray[31]);
         # Add new SNAPE to the array
         $SNPS[$snp_line] = $SNP;
         $snp_line ++;
@@ -80,7 +82,7 @@ close FH;
 # print "Chrome index is $HEADERS::CHROM\n";
 # print "POS index is $HEADERS::POS\n";
 
-my $test =  $SNPS[2]->FILTER();
+my $test =  $SNPS[2]->ENTREZ();
 print "$test\n";
 # print "$ {$SNAPES[2]->FILTER}\n";
 
