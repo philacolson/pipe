@@ -19,19 +19,25 @@ open FH, '<', "$ARGV[0]";
 my $foundheaders = 0;
 my $snp_line = 0;
 my @SNPS = ();
-if 
+
 while (my $line = <FH>) {
 	# once you've found the headers, this will begin to kickoff
-	if ($foundheaders == 1)
-	{
-		# get line elements and create a new SNAPE object using the elements
-		# matched to the header index
-		my @lineArray = split("\t", $line);
-		my $SNP = new CLASS::SNP();
+	
+	# Search for line with "#C" at the beginning.  This will contain the headers
+	if ($line =~ m/#/ ) {
+		
+	};
 
-		# set all the values.  Note that this could be done in a constructor
-		### Need to check to verify that that position exists before setting value
-		$SNP->ENTREZ(@lineArray[$HEADERS::Entrez_Gene_Id]);
+    else 
+        {
+        # get line elements and create a new SNAPE object using the elements
+        # matched to the header index
+        my @lineArray = split("\t", $line);
+        my $SNP = new CLASS::SNP();
+
+        # set all the values.  Note that this could be done in a constructor
+        ### Need to check to verify that that position exists before setting value
+        $SNP->ENTREZ(@lineArray[$HEADERS::Entrez_Gene_Id]);
         $SNP->CENTER(@lineArray[$HEADERS::Center]);
         $SNP->TCGAID(@lineArray[$HEADERS::NCBI_Build]);
         $SNP->POS(@lineArray[$HEADERS::Start_Position]);
@@ -41,7 +47,7 @@ while (my $line = <FH>) {
         $SNP->STRAND(@lineArray[$HEADERS::Strand]);
         $SNP->VARIANTCLASS(@lineArray[$HEADERS::Variant_Classification]);
         $SNP->VARIANTTYPE(@lineArray[$HEADERS::Variant_Type]);
-	$SNP->REFALLELE(@lineArray[$HEADERS::Referene_Allele]);
+        $SNP->REFALLELE(@lineArray[$HEADERS::Referene_Allele]);
         $SNP->TUMORSEQALLELE1(@lineArray[$HEADERS::Tumor_Seq_Allele1]);
         $SNP->TUMORSEQALLELE2(@lineArray[$HEADERS::Tumor_Seq_Allele2]);
         $SNP->DBSNP(@lineArray[$HEADERS::dbSNP_RS]);
@@ -63,24 +69,11 @@ while (my $line = <FH>) {
         $SNP->SEQUENCER(@lineArray[$HEADERS::Sequencer]);
         $SNP->TUMORSAMPLEUUID(@lineArray[$HEADERS::Tumor_Sample_UUID]);
         $SNP->MATCHNORMSAMPLEUUID(@lineArray[$HEADERS::Matched_Norm_Sample_UUID]);
-		# Add new SNAPE to the array
-		$SNPS[$snp_line] = $SNP;
-		$snp_line ++;
-	};
+        # Add new SNAPE to the array
+        $SNPS[$snp_line] = $SNP;
+        $snp_line ++;
+    };
 
-	# Search for line with "#C" at the beginning.  This will contain the headers
-	if ($line =~ m/#C/ ) {
-		# strip the first # symbol from the headers
-		my $subline = substr $line, 1;
-		chomp($subline);
-
-		# split the line into an array and index headers
-		my @headers = split("\t", $subline);
-		&assign_headers(\@headers);
-
-		# check off foundheaders flag
-		$foundheaders = 1;
-	};
 };
 close FH;
 
