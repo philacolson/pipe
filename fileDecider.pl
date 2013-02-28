@@ -1,17 +1,21 @@
 use strict;
 use warnings;
+my $file = $ARGV[0];
 
-open $FH, '<', "$ARGV[0]";
 
-my $firstLine = <$FH>;
-close $FH;
+open my $FHa, '<', "$file";
 
+my $firstLine = <$FHa>;
+close $FHa;
+print $firstLine;
 if ($firstLine =~ m/VCF/)
 {
-#ship off to vcf_reader
+	print "VCF";
+system("perl ./vcf_reader.pl $ARGV[0]");
 }
 
 else
 {
-	#ship off to maf_reader
+	print "MAF $file";
+system("perl maf_reader.pl $file");
 }

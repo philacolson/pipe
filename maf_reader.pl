@@ -2,18 +2,18 @@
 
 ###################################################
 #
-# Test reader for vcf file
+# Test reader for maf file
 #
 ###################################################
 
 use strict;
 use warnings;
 use CLASS::SNP;
+print "The file being asked for is: $ARGV[0]\n\n";
 
-
-open FH, '<', "$ARGV[0]";
+open (FH, '<',"$ARGV[0]") or die "I got to maf_reader but I can't open ";
 # open FH, '<', $TEST::file;
-
+print "made it to maf_reader\n\n";
 # create a flag to kickoff parsing each line once the line with the headers
 # is found.  Also need array of SNAPES.
 my $foundheaders = 0;
@@ -83,7 +83,7 @@ close FH;
 # print "POS index is $HEADERS::POS\n";
 
 my $test =  $SNPS[2]->ENTREZ();
-print "$test\n";
+print "In MAFREADER $test\n";
 # print "$ {$SNAPES[2]->FILTER}\n";
 
 sub assign_headers
