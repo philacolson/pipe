@@ -59,6 +59,7 @@ sub read_maf {
             $SNP->TUMORSEQALLELE1($lineArray[11]);
             $SNP->TUMORSEQALLELE2($lineArray[12]);
             $SNP->DBSNP($lineArray[13]);
+            #comment
             $SNP->DBSNPVALIDSTATUS($lineArray[14]);
             $SNP->TUMORBARCODE($lineArray[15]);
             $SNP->MATCHEDNORMSAMPLEBARCODE($lineArray[16]);
