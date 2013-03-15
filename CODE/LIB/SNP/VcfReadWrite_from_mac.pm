@@ -65,6 +65,69 @@ sub read_vcf {
             # Aribtrary fields will be ignored.  Filds without values will be ignored.
             # fields are arranged by two letter characters, sometimes = value, then a semi-colon as such:
             # NS=3;DP=14;AF=0.5;DB;H2
+            if (defined $HEADERS::INFO) {
+                my @infoArray = split(/;/);
+                foreach (@infoArray)
+                {
+                    if ($_ =~ /[AA]/)
+                    {
+                        my $ancestralAllele = (split /\=/, $item)[1];
+                    }
+                    if ($_ =~ /[AC]/)
+                    {
+                        my $alleleCount = (split /\=/, $item)[1];
+                    }
+                    if ($_ =~ /[AF]/)
+                    {
+                        my $alleleFreq = (split /\=/, $item)[1];
+                    }
+                    if ($_ =~ /[AN]/)
+                    {
+                        my $numOfAlleles = (split /\=/, $item)[1];
+                    }
+                    if ($_ =~ /[BQ]/)
+                    {
+                        my $baseQual = (split /\=/, $item)[1];
+                    }
+                    if ($_ =~ /[CIGAR]/)
+                    {
+                        my $cigar = (split /\=/, $item)[1];
+                    }
+                    if ($_ =~ /[DP]/)
+                    {
+                        my $depth = (split /\=/, $item)[1];
+                    }
+                    if ($_ =~ /[END]/)
+                    {
+                        my $endPos = (split /\=/, $item)[1];
+                    }
+                    if ($_ =~ /[MQ]/)
+                    {
+                        my $RMSmappingQual = (split /\=/, $item)[1];
+                    }
+                    if ($_ =~ /[MQ0]/)
+                    {
+                        my $numMapQ0 = (split /\=/, $item)[1];
+                    }
+                    if ($_ =~ /[NS]/)
+                    {
+                        my $NumSamples = (split /\=/, $item)[1];
+                    }
+                    if ($_ =~ /[SB]/)
+                    {
+                        my $strandBias = (split /\=/, $item)[1];
+                    }
+                    # The most important field for analysis purposes is the I16 field
+                    # it contains all the various counts needed for filtering.
+                    # I16 stands for 16 integers, all comma delimited.
+                    if ($_ =~ /[I16]/)
+                    {
+                        my @i16array = split(/,/, substr)
+                    }
+
+                }
+
+            }
 
             # Add new SNP to the array
             push @SNPS, $SNP;

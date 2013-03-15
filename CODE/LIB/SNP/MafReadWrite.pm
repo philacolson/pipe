@@ -21,7 +21,7 @@ sub read_maf {
     open FH, '<', "$fullFilePath"; 
 
     # create a flag to kickoff parsing each line once the line with the headers
-    # is found.  Also need array of SNPs.
+    # is found.  Also need array of SNAPES.
     my $foundheaders = 0;
     my $snp_line = 0;
     my @SNPS = ();
@@ -31,14 +31,14 @@ sub read_maf {
 	
 	
         if ($line =~ m/#/) {
-		#Irrelevant, non-SNP information
+		
         }
         elsif ($line =~ m/HUGO_SYMBOL/){
             #Headers already taken care of
         }
         else 
         {
-            # get line elements and create a new SNP object using the elements
+            # get line elements and create a new SNAPE object using the elements
             # matched to the header index
             my @lineArray = split("\t", $line);
             my $SNP = new LIB::SNP::SNP();
@@ -59,7 +59,6 @@ sub read_maf {
             $SNP->TUMORSEQALLELE1($lineArray[11]);
             $SNP->TUMORSEQALLELE2($lineArray[12]);
             $SNP->DBSNP($lineArray[13]);
-            #comment
             $SNP->DBSNPVALIDSTATUS($lineArray[14]);
             $SNP->TUMORBARCODE($lineArray[15]);
             $SNP->MATCHEDNORMSAMPLEBARCODE($lineArray[16]);
@@ -78,14 +77,13 @@ sub read_maf {
             $SNP->SEQUENCER($lineArray[29]);
             $SNP->TUMORSAMPLEUUID($lineArray[30]);
             $SNP->MATCHNORMSAMPLEUUID($lineArray[31]);
-            # Add new SNP to the array
+            # Add new SNAPE to the array
             $SNPS[$snp_line] = $SNP;
             $snp_line ++;
         };
 
     };
     close FH;
-    return \@SNPS;
 };
 
 # print "Chrome index is $HEADERS::CHROM\n";
@@ -95,13 +93,13 @@ sub read_maf {
 # print "In MAFREADER $test\n";
 # print "$ {$SNAPES[2]->FILTER}\n";
 
-#sub assign_headers
-#{
-#	package HEADERS;
-#	my @array = @{$_[0]};
-#    my @headers=("ENTREZ", "CENTER", "TCGAID", "POS", "CHROM", "STARTER", "ENDER", "STRAND", "VARIANTCLASS", "VARIANTTYPE", "REFALLELE", "TUMORSEQALLELE1", "TUMORSEQALLELE2", "DBSNP", "DBSNPVALIDSTATUS", "TUMORBARCODE", "MATCHEDNORMSAMPLEBARCODE", "MATCHNORMSEQALLELE1", "MATCHNORMSEQALLELE2", "TUMORVALIDALLELE1", "TUMORVALIDALLELE2", "MATCH_NORM_VALID_ALLELE1", "MATCH_NORM_VALID_ALLELE2", "VERIFICATIONSTATUS", "VALIDATIONSTATUS", "MUTATIONSTATUS", "SEQPHASE", "SEQSOURCE", "VALIDATIONMETHOD", "SEQUENCER", "TUMORSAMPLEUUID", "MATCHNORMSAMPLEUUID");
-#	my $iter = 0;
+sub assign_headers
+{
+	package HEADERS;
+	my @array = @{$_[0]};
+    my @headers=("ENTREZ", "CENTER", "TCGAID", "POS", "CHROM", "STARTER", "ENDER", "STRAND", "VARIANTCLASS", "VARIANTTYPE", "REFALLELE", "TUMORSEQALLELE1", "TUMORSEQALLELE2", "DBSNP", "DBSNPVALIDSTATUS", "TUMORBARCODE", "MATCHEDNORMSAMPLEBARCODE", "MATCHNORMSEQALLELE1", "MATCHNORMSEQALLELE2", "TUMORVALIDALLELE1", "TUMORVALIDALLELE2", "MATCH_NORM_VALID_ALLELE1", "MATCH_NORM_VALID_ALLELE2", "VERIFICATIONSTATUS", "VALIDATIONSTATUS", "MUTATIONSTATUS", "SEQPHASE", "SEQSOURCE", "VALIDATIONMETHOD", "SEQUENCER", "TUMORSAMPLEUUID", "MATCHNORMSAMPLEUUID");
+	my $iter = 0;
     	
-#};
+};
 
 1;

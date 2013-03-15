@@ -50,7 +50,7 @@ else
 }
 
 # print out a val
-my $test = $results->[2]->REF;
+my $test = $results->[2]->CHROME;
 print "$test\n";
 
 # change a val
@@ -59,3 +59,12 @@ $results->[2]->REF("C");
 # confirm change
 $test = $results->[2]->REF;
 print "$test\n";
+
+# ensure bad fields not present
+# print out a val
+if (defined $results->[2]->CENTER)
+{
+	my $test3 = $results->[2]->CENTER;
+	print "$test3\n";
+}
+
