@@ -9,8 +9,8 @@
 use Bio::DB::Sam;
 
 # high level API
-my $sam = Bio::DB::Sam->new(-bam  =>"/Users/coryprzybyla/Desktop/BuffaloRA/TEST_SCRIPTS/VCF/BAMfiles/sample_Pooled-Ctrl.bam",
-                             -fasta=>"/Users/coryprzybyla/Desktop/BuffaloRA/TEST_SCRIPTS/VCF/BAMfiles/chr1.fa",
+my $sam = Bio::DB::Sam->new(-bam  =>"/Users/ph27168_ca/Documents/TestBACKUP/BAM/sample_Pooled-Ctrl.bam",
+                             -fasta=>"/Users/ph27168_ca/Documents/TestBACKUP/BAM/chr1.fa",
                              );
 
 ##### list of targets is rather strange, but this works.
