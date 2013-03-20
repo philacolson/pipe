@@ -52,6 +52,7 @@ sub read_vcf {
                 $SNP->REF(@lineArray[$HEADERS::REF]);
             }
             if (defined $HEADERS::ALT) {
+                # may need to split this into a hash if multiple alt alleles.
                 $SNP->ALT(@lineArray[$HEADERS::ALT]);
             }
             if (defined $HEADERS::QUAL) {
@@ -65,6 +66,31 @@ sub read_vcf {
             # Aribtrary fields will be ignored.  Filds without values will be ignored.
             # fields are arranged by two letter characters, sometimes = value, then a semi-colon as such:
             # NS=3;DP=14;AF=0.5;DB;H2
+            if (defined $HEADERS::INFO) {
+                my @infoArray = split(';',@lineArray[$HEADERS::INFO]);
+                foreach (@infoArray)
+                {
+                    if ($_ =~ /[DP]/)
+                    {
+                        # this may not be the depth we desire
+                        $SNP->COV($_);
+                    }
+                    # parse the I16 data field
+                    if ($_ =~ /[I16]/)
+                    {
+                        my @i16array = split(',', $_);
+                        $SNP->REF_COUNT_FRWD($i16array[0]);
+                        $SNP->REF_COUNT_REV($i16array[1]);
+                        $SNP->ALT_COUNT_FRWD($i16array[2]);
+                        $SNP->ALT_COUNT_REV($i16array[3]);
+                    }
+                    if ($_ =~ /[INDEL]/)
+                    {
+                        # will have to see the format of this
+                        $SNP->INDEL($_);
+                    }
+                }
+            }
 
             # Add new SNP to the array
             push @SNPS, $SNP;

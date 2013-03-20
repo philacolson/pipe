@@ -27,8 +27,7 @@ LIB::LOGGER::log_it();
 $LIB::LOGGER::log->info("Beginning run_filters.pl script");
 
 # read in the vcf or maf location
-my $infile = $paths->val('INPUT','File');
-my ($ext) = $infile =~ /(\.[^.]+)$/;
+my $infile = $paths->val('INPUT','FileNorm');
 my $source = $paths->val('INPUT','Source');
 my $fullFilePath = "$source/$infile";
 
@@ -46,7 +45,26 @@ elsif ($infile =~ /(\.[maf]+)$/ || $infile =~ /(\.[MAF]+)$/)
 }
 else
 {
-	$LIB::LOGGER::log->logdie("incorrect input file type");
+	$LIB::LOGGER::log->logdie("incorrect input file type for fileNorm in paths.ini");
+}
+
+# read in the cancer vcf or maf location
+my $infile2 = $paths->val('INPUT','FileCanc');
+my $fullFilePath2 = "$source/$infile2";
+if ($infile2 ne '')
+{
+	if ($infile2 =~ /(\.[vcf]+)$/ || $infile2 =~ /(\.[VCF]+)$/)
+	{
+
+	}
+	elsif ($infile2 =~ /(\.[maf]+)$/ || $infile2 =~ /(\.[MAF]+)$/)
+	{
+
+	}
+	else
+	{
+		$LIB::LOGGER::log->logdie("cancer input file not a vcf or maf file");
+	}
 }
 
 # print out a val
@@ -68,3 +86,8 @@ if (defined $results->[2]->CENTER)
 	print "$test3\n";
 }
 
+if (defined $results->[1]->ALT_COUNT_REV)
+{
+	my $test4 = $results->[1]->ALT_COUNT_REV;
+	print "$test4\n";
+}

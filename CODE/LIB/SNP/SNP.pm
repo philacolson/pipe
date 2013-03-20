@@ -7,6 +7,7 @@ use warnings;
 
 sub new {
     my $self = {};
+    # main vcf populated fields
     $self->{CHROME} = undef;
     $self->{POS}    = undef;
     $self->{ID}     = undef;
@@ -14,6 +15,15 @@ sub new {
     $self->{ALT}    = undef;
     $self->{QUAL}   = undef;
     $self->{FILTER} = undef;
+
+    #i16 or info vcf populated fields
+    $self->{REF_COUNT_FRWD} = undef;
+    $self->{REF_COUNT_REV} = undef;
+    $self->{ALT_COUNT_FRWD} = undef;
+    $self->{ALT_COUNT_REV} = undef;
+    $self->{COV} = undef;
+    $self->{INDEL} = undef;
+
     $self->{ENTREZ} = undef;
     $self->{CENTER} = undef;
     $self->{TCGAID} = undef;
@@ -89,6 +99,49 @@ sub FILTER {
     if (@_) { $self->{FILTER} = shift }
     return $self->{FILTER};
 }
+
+sub REF_COUNT_FRWD {
+    my $self = shift;
+    if (@_) { $self->{REF_COUNT_FRWD} = shift }
+    return $self->{REF_COUNT_FRWD};
+}
+
+sub REF_COUNT_REV {
+    my $self = shift;
+    if (@_) { $self->{REF_COUNT_REV} = shift }
+    return $self->{REF_COUNT_REV};
+}
+
+sub ALT_COUNT_FRWD {
+    my $self = shift;
+    if (@_) { $self->{ALT_COUNT_FRWD} = shift }
+    return $self->{ALT_COUNT_FRWD};
+}
+
+sub ALT_COUNT_REV {
+    my $self = shift;
+    if (@_) { $self->{ALT_COUNT_REV} = shift }
+    return $self->{ALT_COUNT_REV};
+}
+
+sub COV {
+    my $self = shift;
+    if (@_) { $self->{COV} = shift }
+    return $self->{COV};
+}
+
+sub INDEL {
+    my $self = shift;
+    if (@_) { $self->{INDEL} = shift }
+    return $self->{INDEL};
+}
+
+
+
+
+
+
+
 
 sub ENTREZ {
     my $self = shift;
