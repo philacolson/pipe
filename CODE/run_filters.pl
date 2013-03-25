@@ -10,13 +10,11 @@
 use strict;
 use warnings;
 
-use LIB::SNP::TEST;
 use LIB::PATHS;
 use LIB::PARMS;
 use LIB::LOGGER;
 use LIB::SNP::VcfReadWrite;
 use LIB::SNP::MafReadWrite;
-use LIB::SNP::BAMFillRestIn;
 
 # get path and level for log configuration file
 my $logLevel = $parms->val('RUN_FILTERS','LogLevel');
@@ -34,7 +32,7 @@ my $source = $paths->val('INPUT','Source');
 my $fullFilePath = "$source/$infile";
 
 # load all object lines into an object called results
-my $results = ();
+my $results;
 if ($infile =~ /(\.[vcf]+)$/ || $infile =~ /(\.[VCF]+)$/)
 {
 	$results = LIB::SNP::VcfReadWrite->read_vcf($fullFilePath);
@@ -54,14 +52,13 @@ if ($infile =~ /(\.[vcf]+)$/ || $infile =~ /(\.[VCF]+)$/)
 elsif ($infile =~ /(\.[maf]+)$/ || $infile =~ /(\.[MAF]+)$/)
 {
 	$results = LIB::SNP::MafReadWrite->read_maf($fullFilePath);
-	$LIB::LOGGER::log->info("maf file read into memory");
-
+	$LIB::LOGGER::log->info("normal maf file read into memory");
 }
 else
 {
 	$LIB::LOGGER::log->logdie("incorrect input file type for fileNorm in paths.ini");
 }
-#$results = $LIB::SNP::BAMFillRestIn->($results);
+
 # read in the cancer vcf or maf location
 my $infile2 = $paths->val('INPUT','FileCanc');
 my $fullFilePath2 = "$source/$infile2";
@@ -79,29 +76,42 @@ if ($infile2 ne '')
 	{
 		$LIB::LOGGER::log->logdie("cancer input file not a vcf or maf file");
 	}
+if ($infile2 =~ /(\.[vcf]+)$/ || $infile2 =~ /(\.[VCF]+)$/)
+{
+	# note that this overwrites the initial SNPS array rather than append.
+	# however, the alternative would be write an array sorting routine afterwards which is
+	# easily as messy.
+	$results = LIB::SNP::VcfReadWrite->read_tumor($fullFilePath2,\$results);
+	$LIB::LOGGER::log->info("tumor vcf file read into memory");
+}
+elsif ($infile2 =~ /(\.[maf]+)$/ || $infile2 =~ /(\.[MAF]+)$/)
+{
+	### add in MAF caller
+}
+else
+{
+	$LIB::LOGGER::log->logdie("tumor input file not a vcf or maf file");
 }
 
-# print out a val
-my $test = $results->[2]->CHROME;
-print "$test\n";
 
-# change a val
-$results->[2]->REF("C");
 
-# confirm change
-$test = $results->[2]->REF;
-print "$test\n";
 
 # ensure bad fields not present
 # print out a val
 if (defined $results->[2]->CENTER)
+my $i = 0;
+foreach (@$results)
 {
+	#print "@$results->[$i]->POS\n";
+	if ($results->[$i]->POS == 1718619)
+	{
+		my $test5 = $results->[$i]->REF_COUNT_TUMOR_FRWD;
+		my $test6 = $results->[$i]->REF_COUNT_FRWD;
+		print "Ref Tumor Fwd $test5\n";
+		print "Ref Norm Fwd $test6\n";
+	}
+	$i++;
 	my $test3 = $results->[2]->CENTER;
 	print "$test3\n";
 }
 
-if (defined $results->[1]->ALT_COUNT_REV)
-{
-	my $test4 = $results->[1]->ALT_COUNT_REV;
-	print "$test4\n";
-}
