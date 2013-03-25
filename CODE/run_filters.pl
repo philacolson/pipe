@@ -10,11 +10,13 @@
 use strict;
 use warnings;
 
+use LIB::SNP::TEST;
 use LIB::PATHS;
 use LIB::PARMS;
 use LIB::LOGGER;
 use LIB::SNP::VcfReadWrite;
 use LIB::SNP::MafReadWrite;
+use LIB::SNP::BAMFillRestIn;
 
 # get path and level for log configuration file
 my $logLevel = $parms->val('RUN_FILTERS','LogLevel');
@@ -37,17 +39,29 @@ if ($infile =~ /(\.[vcf]+)$/ || $infile =~ /(\.[VCF]+)$/)
 {
 	$results = LIB::SNP::VcfReadWrite->read_vcf($fullFilePath);
 	$LIB::LOGGER::log->info("vcf file read into memory");
+	my $testCounter = 0;
+	foreach (@$results)
+	{
+		
+		LIB::SNP::BAMFillRestIn->fill_rest_in(\$$results[$testCounter]);
+	    #LIB::SNP::BAMFillRestIn->does_nothing();
+		#print $_->INDEL();
+		#LIB::SNP::TEST->do_nothing;
+		$testCounter++;
+	}
+	print "This shows bam writes something" . $$results[1]->INDEL();
 }
 elsif ($infile =~ /(\.[maf]+)$/ || $infile =~ /(\.[MAF]+)$/)
 {
 	$results = LIB::SNP::MafReadWrite->read_maf($fullFilePath);
 	$LIB::LOGGER::log->info("maf file read into memory");
+
 }
 else
 {
 	$LIB::LOGGER::log->logdie("incorrect input file type for fileNorm in paths.ini");
 }
-
+#$results = $LIB::SNP::BAMFillRestIn->($results);
 # read in the cancer vcf or maf location
 my $infile2 = $paths->val('INPUT','FileCanc');
 my $fullFilePath2 = "$source/$infile2";

@@ -9,8 +9,8 @@
 use Bio::DB::Sam;
 
 # high level API
-my $sam = Bio::DB::Sam->new(-bam  =>"/Users/ph27168_ca/Documents/TestBACKUP/BAM/sample_Pooled-Ctrl.bam",
-                             -fasta=>"/Users/ph27168_ca/Documents/TestBACKUP/BAM/chr1.fa",
+my $sam = Bio::DB::Sam->new(-bam  =>"/Users/ph27168_ca/Desktop/sample_Pooled-Ctrl.bam",
+                             -fasta=>"/Users/ph27168_ca/Desktop/chr1.fa",
                              );
 
 ##### list of targets is rather strange, but this works.
@@ -19,6 +19,7 @@ my @targets    = $sam->seq_ids;
 print "@targets\n";
 
 my $num_targets = $sam->n_targets;
+#prints 84
 print "$num_targets\n";
 
 ##### length is 198022430, prob chromosome 3
@@ -30,9 +31,10 @@ print "$seq_id\n";
 
 ##### clearly gets a bunch of features, but then can't seem to
 ##### exract anything from them.
-my @features = $sam->get_features_by_location("80791");
-my $arraySize = @features;
-print scalar @features;
+#my @features = $sam->get_features_by_location("80791");
+#my $arraySize = @features;
+#print scalar @features;
+#foreach (@features)
 print "\n";
 
 # while (@features) {
@@ -62,9 +64,10 @@ my $dna = $segment->dna;
 print "DNA strand is $dna\n";
 
 ##### so far get some gibberish for targets index 0, 1, and 3....
-$sam->fetch("@targets[0]:0-1000000",
+$sam->fetch("@targets[0]:769000-769999",
               sub {
                 my $a = shift;
+             
                 print $a->display_name,' ',$a->cigar_str,' ',$a->pos,' ',$a->paired,"\n";
               });
 

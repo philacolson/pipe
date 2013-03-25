@@ -1,6 +1,0 @@
-filter_SNV_main.pl       52      FATAL 
-     Beginning of Log
-CODE/run_filters.pl       27       INFO 
-     Beginning run_filters.pl script
-CODE/run_filters.pl       40       INFO 
-     vcf file read into memory

@@ -70,13 +70,13 @@ sub read_vcf {
                 my @infoArray = split(';',@lineArray[$HEADERS::INFO]);
                 foreach (@infoArray)
                 {
-                    if ($_ =~ /[DP]/)
+                    if ($_ =~ /DP/)
                     {
                         # this may not be the depth we desire
                         $SNP->COV($_);
                     }
                     # parse the I16 data field
-                    if ($_ =~ /[I16]/)
+                    if ($_ =~ /I16/)
                     {
                         my @i16array = split(',', $_);
                         $SNP->REF_COUNT_FRWD($i16array[0]);
@@ -84,7 +84,8 @@ sub read_vcf {
                         $SNP->ALT_COUNT_FRWD($i16array[2]);
                         $SNP->ALT_COUNT_REV($i16array[3]);
                     }
-                    if ($_ =~ /[INDEL]/)
+
+                    if ($_ =~ /INDEL/)
                     {
                         # will have to see the format of this
                         $SNP->INDEL($_);
