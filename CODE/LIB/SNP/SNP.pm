@@ -21,6 +21,10 @@ sub new {
     $self->{REF_COUNT_REV} = undef;
     $self->{ALT_COUNT_FRWD} = undef;
     $self->{ALT_COUNT_REV} = undef;
+    $self->{REF_COUNT_TUMOR_FRWD} = undef;
+    $self->{REF_COUNT_TUMOR_REV} = undef;
+    $self->{ALT_COUNT_TUMOR_FRWD} = undef;
+    $self->{ALT_COUNT_TUMOR_REV} = undef;
     $self->{COV} = undef;
     $self->{INDEL} = undef;
 
@@ -57,8 +61,6 @@ sub new {
     bless($self);
     return $self;
 }
-
-
 
 sub CHROME {
     my $self = shift;
@@ -124,6 +126,30 @@ sub ALT_COUNT_REV {
     my $self = shift;
     if (@_) { $self->{ALT_COUNT_REV} = shift }
     return $self->{ALT_COUNT_REV};
+}
+
+sub REF_COUNT_TUMOR_FRWD {
+    my $self = shift;
+    if (@_) { $self->{REF_COUNT_TUMOR_FRWD} = shift }
+    return $self->{REF_COUNT_TUMOR_FRWD};
+}
+
+sub REF_COUNT_TUMOR_REV {
+    my $self = shift;
+    if (@_) { $self->{REF_COUNT_TUMOR_REV} = shift }
+    return $self->{REF_COUNT_TUMOR_REV};
+}
+
+sub ALT_COUNT_TUMOR_FRWD {
+    my $self = shift;
+    if (@_) { $self->{ALT_COUNT_TUMOR_FRWD} = shift }
+    return $self->{ALT_COUNT_TUMOR_FRWD};
+}
+
+sub ALT_COUNT_TUMOR_REV {
+    my $self = shift;
+    if (@_) { $self->{ALT_COUNT_TUMOR_REV} = shift }
+    return $self->{ALT_COUNT_TUMOR_REV};
 }
 
 sub COV {

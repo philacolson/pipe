@@ -11,7 +11,18 @@ package LIB::SNP::MafReadWrite;
 use strict;
 use warnings;
 
+use LIB::PATHS;
+use LIB::PARMS;
 use LIB::SNP::SNP;
+use LIB::LOGGER;
+
+# get path and level for log configuration file
+my $logLevel = $parms->val('MAF','LogLevel');
+my $logFormat = $parms->val('MAF','LogFormat');
+
+# start up the log
+&LIB::LOGGER::open_log($logLevel,$logFormat);
+LIB::LOGGER::log_it();
 
 sub read_maf {
 
@@ -49,9 +60,17 @@ sub read_maf {
             $SNP->CENTER($lineArray[1]);
             $SNP->TCGAID($lineArray[2]);
             $SNP->POS($lineArray[3]);
+            
+            # common fields
             $SNP->CHROME($lineArray[4]);
+            # this is the 'start position' of the mutation.  Would need to deal with cases where
+            # start != end (and basically chunk it out into multiple objects for each position in between)
+            $SNP->POS($lineArray[5]);
+            
+            # positions should go away
             $SNP->STARTER($lineArray[5]);
             $SNP->ENDER($lineArray[6]);
+
             $SNP->STRAND($lineArray[7]);
             $SNP->VARIANTCLASS($lineArray[8]);
             $SNP->VARIANTTYPE($lineArray[9]);
