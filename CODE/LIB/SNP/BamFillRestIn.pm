@@ -6,21 +6,27 @@
 #was not filled in from the VCF/MAF file
 #############################
 
-#The psuedocode of this is that it gets called by VCFReadWrite at a certain time, and takes in 
-#
+
 package LIB::SNP::BamFillRestIn;
 
 use strict;
 use warnings;
 #use diagnostics;
-use SNP;
+use LIB::SNP::SNP;
 use Bio::DB::Sam;
 
-my $tempVar;
+my $VARPOS = undef;
+my $VARID = undef;
+my $VARREF = undef;
+my $VARALT = undef;
+my $VARQUAL = undef;
+my $VARFILTER = undef;
+my $VARINDEL= undef;
+my $VARSTRAND = undef;
 
 my $callback = sub {
     my ($seqid,$pos,$pileup) = @_;
-   package main;
+
     our $indel;
         my $counts = @$pileup;
         
@@ -28,26 +34,46 @@ my $callback = sub {
         #$depth += @$pileup;
         #each pileup object is the whole string of bps at that position
        
-        foreach (@$pileup)
+        foreach my $read (@$pileup)
         {
             
-         # $indel = Bio::DB::Sam->pileup()->INDEL();
-      	$tempVar = $_->pos;        
-      }
-        # print "seq_id is " . $seq_id . " mseqid is " . $mseqid . " mend is " . $mend . " mstrand is " . $mstrand . " query dna is " . $query_dna . " read name is " . $read_name . "\n";
-        # " strand is " $strand
+        if (not defined($VARSTRAND))
+        {
+          print "All systems go, Strand is not defined";
+
+        }
+        else
+        {
+          print "No go, defined as " . $VARSTRAND;
+
+        }
+      	$VARPOS = $read->pos;        
+        $VARID = $read->alignment->seq_id;
+
+        $VARSTRAND = $read->alignment->strand;
+
+        if (defined ($VARSTRAND))
+        {
+          print "Systems still go, defined as " . $VARSTRAND;
+        }
+        else
+        {
+          print "Uh oh, VARSTRAND is not defined"
+        }
+          }
+      
     };
 
     
 sub fill_rest_in
 {
 
-	#what's with "self"?  I'm only passing one variable.
+	
 	my ($self,$SNP) = @_;
-print "$SNP";
 
- my $sam = Bio::DB::Sam->new(-fasta=>"/home/cory/Desktop/BAMfiles/chr1.fa",
-                             -bam  =>"/home/cory/Desktop/BAMfiles/sample_Pooled-Ctrl.bam");
+
+ my $sam = Bio::DB::Sam->new(-fasta=>"/Users/ph27168_ca/Desktop/chr1.fa",
+                             -bam  =>"/Users/ph27168_ca/Desktop/sample_Pooled-Ctrl.bam");
 
 
  #my @alignments = $sam->get_features_by_location(-seq_id => '1',
@@ -56,6 +82,16 @@ print "$SNP";
  	
 	$sam->pileup("1:859560-859560",$callback);
 	
-	$$SNP->INDEL($tempVar);
+	$$SNP->POS($VARPOS) unless not defined ($VARPOS);
+  $$SNP->ID($VARID) unless not defined ($VARID);
+  $$SNP->REF($VARREF) unless not defined ($VARREF);
+  $$SNP->ALT($VARALT) unless not defined ($VARALT);
+  $$SNP->QUAL($VARQUAL) unless not defined ($VARQUAL);
+  $$SNP->FILTER($VARFILTER) unless not defined ($VARFILTER);
+  $$SNP->INDEL($VARINDEL) unless not defined ($VARINDEL);
+  $$SNP->STRAND($VARSTRAND) unless not defined ($VARSTRAND);
+
+  
+  print $$SNP->STRAND();
 }
 

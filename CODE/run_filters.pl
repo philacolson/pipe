@@ -15,7 +15,7 @@ use LIB::PARMS;
 use LIB::LOGGER;
 use LIB::SNP::VcfReadWrite;
 use LIB::SNP::MafReadWrite;
-
+use LIB::SNP::BamFillRestIn;
 # get path and level for log configuration file
 my $logLevel = $parms->val('RUN_FILTERS','LogLevel');
 my $logFormat = $parms->val('RUN_FILTERS','LogFormat');
@@ -41,13 +41,13 @@ if ($infile =~ /(\.[vcf]+)$/ || $infile =~ /(\.[VCF]+)$/)
 	foreach (@$results)
 	{
 		
-		LIB::SNP::BAMFillRestIn->fill_rest_in(\$$results[$testCounter]);
+		LIB::SNP::BamFillRestIn->fill_rest_in(\$$results[$testCounter]);
 	    #LIB::SNP::BAMFillRestIn->does_nothing();
 		#print $_->INDEL();
 		#LIB::SNP::TEST->do_nothing;
 		$testCounter++;
 	}
-	print "This shows bam writes something" . $$results[1]->INDEL();
+	print "This shows bam writes something" . $$results[0]->INDEL();
 }
 elsif ($infile =~ /(\.[maf]+)$/ || $infile =~ /(\.[MAF]+)$/)
 {
@@ -62,8 +62,7 @@ else
 # read in the cancer vcf or maf location
 my $infile2 = $paths->val('INPUT','FileCanc');
 my $fullFilePath2 = "$source/$infile2";
-if ($infile2 ne '')
-{
+
 	if ($infile2 =~ /(\.[vcf]+)$/ || $infile2 =~ /(\.[VCF]+)$/)
 	{
 
@@ -99,6 +98,8 @@ else
 # ensure bad fields not present
 # print out a val
 if (defined $results->[2]->CENTER)
+{my $test3 = $results->[2]->CENTER;
+	print "$test3\n";
 my $i = 0;
 foreach (@$results)
 {
@@ -111,7 +112,6 @@ foreach (@$results)
 		print "Ref Norm Fwd $test6\n";
 	}
 	$i++;
-	my $test3 = $results->[2]->CENTER;
-	print "$test3\n";
+	
 }
-
+}
