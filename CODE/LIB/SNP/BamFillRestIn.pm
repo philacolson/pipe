@@ -15,6 +15,7 @@ use warnings;
 use LIB::SNP::SNP;
 use Bio::DB::Sam;
 
+#Start them all out as undefined, and whatever is changed will go to the SNP object.
 my $VARPOS = undef;
 my $VARID = undef;
 my $VARREF = undef;
@@ -24,43 +25,32 @@ my $VARFILTER = undef;
 my $VARINDEL= undef;
 my $VARSTRAND = undef;
 
+my prelimCountSNPCounter = 1;
+
 my $callback = sub {
     my ($seqid,$pos,$pileup) = @_;
 
     our $indel;
         my $counts = @$pileup;
-        
-        #$positions++;
-        #$depth += @$pileup;
-        #each pileup object is the whole string of bps at that position
        
         foreach my $read (@$pileup)
         {
-            
-        if (not defined($VARSTRAND))
-        {
-          print "All systems go, Strand is not defined";
+          $VARPOS = undef;
+          $VARID = undef;
+          $VARREF = undef;
+          $VARALT = undef;
+          $VARQUAL = undef;
+          $VARFILTER = undef;
+          $VARINDEL= undef;
+          $VARSTRAND = undef;
+                  #Set a couple of the fields.
+          $VARPOS = $read->pos;        
+          $VARID = $read->alignment->seq_id;
+          $VARSTRAND = $read->alignment->strand;
 
-        }
-        else
-        {
-          print "No go, defined as " . $VARSTRAND;
 
-        }
-      	$VARPOS = $read->pos;        
-        $VARID = $read->alignment->seq_id;
-
-        $VARSTRAND = $read->alignment->strand;
-
-        if (defined ($VARSTRAND))
-        {
-          print "Systems still go, defined as " . $VARSTRAND;
-        }
-        else
-        {
-          print "Uh oh, VARSTRAND is not defined"
-        }
-          }
+        
+      }
       
     };
 
@@ -68,7 +58,7 @@ my $callback = sub {
 sub fill_rest_in
 {
 
-	
+
 	my ($self,$SNP) = @_;
 
 
@@ -81,7 +71,10 @@ sub fill_rest_in
    #                                              -end    => 900000);
  	
 	$sam->pileup("1:859560-859560",$callback);
-	
+
+
+	#Here, after the above function completes, we are scanning for any variable that has been filled in.  That SHOULD mean that the SNP object does not currently have an entry in that field.
+  #So we are taking the variables that are defined and plugging them into the SNP object.  If they are not defined, then they are already filled in $SNP so don't overwrite them.
 	$$SNP->POS($VARPOS) unless not defined ($VARPOS);
   $$SNP->ID($VARID) unless not defined ($VARID);
   $$SNP->REF($VARREF) unless not defined ($VARREF);
@@ -91,7 +84,20 @@ sub fill_rest_in
   $$SNP->INDEL($VARINDEL) unless not defined ($VARINDEL);
   $$SNP->STRAND($VARSTRAND) unless not defined ($VARSTRAND);
 
-  
-  print $$SNP->STRAND();
+
+  #print $$SNP->STRAND();
 }
 
+
+sub prelimCountSNPs{
+  my shift($currSNP,$nextSNP) = @_;
+  if ($$currSNP->POS() -ne $$nextSNP->POS())
+  {
+    prelimCountSNPCounter = 1;
+  }
+  else
+  {
+    prelimCountSNPCounter++;
+  }
+  $$nextSNP->COUNT(prelimCountSNPCounter);
+}

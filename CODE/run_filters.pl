@@ -46,8 +46,27 @@ if ($infile =~ /(\.[vcf]+)$/ || $infile =~ /(\.[VCF]+)$/)
 		#print $_->INDEL();
 		#LIB::SNP::TEST->do_nothing;
 		$testCounter++;
+		LIB::SNP::BamFillRestIn->prelimCountSNPs(\$$results[$testCounter], \$$results[$testCounter + 1]) unless not defined $results[$testCounter + 1];
 	}
-	print "This shows bam writes something" . $$results[0]->INDEL();
+	reverse(@$results);
+
+	my $howManyAreLeftBeforeNextPosition = @$results[0]->COUNT();
+	my $totalCount = @$results[0]->COUNT();
+	foreach(@$results)
+	{
+		#$howManyAreLeftBeforeNextPosition = $$results->COUNT();
+
+		if ($howManyAreLeftBeforeNextPosition > 0)
+		{
+			$$results->COUNT($totalCount);
+			$howManyAreLeftBeforeNextPosition--;
+		}
+		else
+		{
+			$howManyAreLeftBeforeNextPosition = $$results->COUNT();
+			$totalCount = $$results->COUNT();
+		}
+	}
 }
 elsif ($infile =~ /(\.[maf]+)$/ || $infile =~ /(\.[MAF]+)$/)
 {
