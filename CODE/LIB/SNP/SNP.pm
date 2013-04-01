@@ -7,6 +7,8 @@ use warnings;
 
 sub new {
     my $self = {};
+
+    $self->{ISTUMOR}= undef;
     # main vcf populated fields
     $self->{CHROME} = undef;
     $self->{POS}    = undef;
@@ -15,7 +17,7 @@ sub new {
     $self->{ALT}    = undef;
     $self->{QUAL}   = undef;
     $self->{FILTER} = undef;
-
+    $self->{COUNT} = undef;
     #i16 or info vcf populated fields
     $self->{REF_COUNT_FRWD} = undef;
     $self->{REF_COUNT_REV} = undef;
@@ -61,13 +63,21 @@ sub new {
     bless($self);
     return $self;
 }
-
+sub ISTUMOR {
+    my $self = shift;
+    if (@_) { $self->{ISTUMOR} = shift}
+    return $self->{ISTUMOR};
+}
 sub CHROME {
     my $self = shift;
     if (@_) { $self->{CHROME} = shift } 
     return $self->{CHROME};
 }
-
+sub COUNT {
+    my $self = shift;
+    if (@_) { $self->{COUNT} = shift }
+    return $self->{COUNT};
+}
 sub POS {
     my $self = shift;
     if (@_) { $self->{POS} = shift }

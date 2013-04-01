@@ -36,37 +36,26 @@ my $results;
 if ($infile =~ /(\.[vcf]+)$/ || $infile =~ /(\.[VCF]+)$/)
 {
 	$results = LIB::SNP::VcfReadWrite->read_vcf($fullFilePath);
+	#print @$results;
 	$LIB::LOGGER::log->info("vcf file read into memory");
 	my $testCounter = 0;
 	foreach (@$results)
 	{
 		
-		LIB::SNP::BamFillRestIn->fill_rest_in(\$$results[$testCounter]);
+		LIB::SNP::BamFillRestIn->fill_rest_in(\$$results[$testCounter], "1:39759200-39759200");
 	    #LIB::SNP::BAMFillRestIn->does_nothing();
 		#print $_->INDEL();
 		#LIB::SNP::TEST->do_nothing;
 		$testCounter++;
-		LIB::SNP::BamFillRestIn->prelimCountSNPs(\$$results[$testCounter], \$$results[$testCounter + 1]) unless not defined $results[$testCounter + 1];
+		print "For SNP: $testCounter :" . $_->REF_COUNT_FRWD() . " is Ref forward\n";
+		print $_->REF_COUNT_REV() . " Is ref reverse\n";
+		print $_->ALT_COUNT_FRWD() . "Is the alt count frwd \nand " . $_->ALT_COUNT_REV() . " is ALT_COUNTREV\n";
 	}
-	reverse(@$results);
 
-	my $howManyAreLeftBeforeNextPosition = @$results[0]->COUNT();
-	my $totalCount = @$results[0]->COUNT();
-	foreach(@$results)
-	{
-		#$howManyAreLeftBeforeNextPosition = $$results->COUNT();
-
-		if ($howManyAreLeftBeforeNextPosition > 0)
-		{
-			$$results->COUNT($totalCount);
-			$howManyAreLeftBeforeNextPosition--;
-		}
-		else
-		{
-			$howManyAreLeftBeforeNextPosition = $$results->COUNT();
-			$totalCount = $$results->COUNT();
-		}
-	}
+#foreach (@$results)
+#{
+#	print $_->COUNT();
+#}
 }
 elsif ($infile =~ /(\.[maf]+)$/ || $infile =~ /(\.[MAF]+)$/)
 {
@@ -127,8 +116,8 @@ foreach (@$results)
 	{
 		my $test5 = $results->[$i]->REF_COUNT_TUMOR_FRWD;
 		my $test6 = $results->[$i]->REF_COUNT_FRWD;
-		print "Ref Tumor Fwd $test5\n";
-		print "Ref Norm Fwd $test6\n";
+		#print "Ref Tumor Fwd $test5\n";
+		#print "Ref Norm Fwd $test6\n";
 	}
 	$i++;
 	
