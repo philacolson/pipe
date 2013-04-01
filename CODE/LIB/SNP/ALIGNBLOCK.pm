@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-package CLASS::ALIGNBLOCK;
+package LIB::SNP::ALIGNBLOCK;
  
 use strict;
 use warnings;
