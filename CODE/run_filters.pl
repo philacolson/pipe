@@ -39,17 +39,19 @@ if ($infile =~ /(\.[vcf]+)$/ || $infile =~ /(\.[VCF]+)$/)
 	#print @$results;
 	$LIB::LOGGER::log->info("vcf file read into memory");
 	my $testCounter = 0;
+	print scalar(@$results);
 	foreach (@$results)
 	{
-		
-		LIB::SNP::BamFillRestIn->fill_rest_in(\$$results[$testCounter], "1:39759200-39759200");
+		my $position = $_->POS();
+		print $_->POS() . "\n";
+		LIB::SNP::BamFillRestIn->fill_rest_in(\$$results[$testCounter], "1:$position-$position");
 	    #LIB::SNP::BAMFillRestIn->does_nothing();
 		#print $_->INDEL();
 		#LIB::SNP::TEST->do_nothing;
 		$testCounter++;
-		print "For SNP: $testCounter :" . $_->REF_COUNT_FRWD() . " is Ref forward\n";
-		print $_->REF_COUNT_REV() . " Is ref reverse\n";
-		print $_->ALT_COUNT_FRWD() . "Is the alt count frwd \nand " . $_->ALT_COUNT_REV() . " is ALT_COUNTREV\n";
+		#print "For SNP: $testCounter :" . $_->REF_COUNT_FRWD() . " is Ref forward\n";
+		#print $_->REF_COUNT_REV() . " Is ref reverse\n";
+		#print $_->ALT_COUNT_FRWD() . "Is the alt count frwd \nand " . $_->ALT_COUNT_REV() . " is ALT_COUNTREV\n";
 	}
 
 #foreach (@$results)
